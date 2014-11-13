@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
+    <link rel="stylesheet" href="/bower_components/angular-material/themes/orange-theme.css">
+    <link rel="stylesheet" href="/bower_components/angular-material/themes/grey-theme.css">
+</head>
+
+    <body ng-app="app" ng-controller="test">
+
+        <div layout="vertical" layout-fill md-theme="grey">
+
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <span>Bandwidth Monitor</span>
+
+                    <span flex></span>
+                    
+                    <md-button ng-click="loginObj.$logout()" ng-if="auth===true">
+                        Logout
+                    </md-button>                    
+                </div>
+            </md-toolbar>
+
+            <div layout flex layout-align="center center" ng-if="auth===false">
+                <md-button ng-click="loginObj.$login('google')">
+                    Login
+                </md-button>
+            </div>    
+
+            <div layout flex layout-align="center center" ng-if="auth===null">
+                <md-progress-circular md-theme="blue" mode="indeterminate"></md-progress-circular>
+            </div>    
+
+            <div ng-if="auth===true">
+
+                <div layout="horizontal">
+                    <div flex layout-padding>
+                        <md-whiteframe class="md-whiteframe-z1" layout layout-align="center center">
+                            <h1>Today: <small>{{today}}</small></h1>
+                        </md-whiteframe>
+                    </div>
+                    <div flex layout-padding>
+                        <md-whiteframe class="md-whiteframe-z1" layout layout-align="center center">
+                            <h1>Week: <small>75Mb</small></h1>
+                        </md-whiteframe>
+                    </div>
+                    <div flex layout-padding>
+                        <md-whiteframe class="md-whiteframe-z1" layout layout-align="center center">
+                            <h1>Month: <small>75Mb</small></h1>
+                        </md-whiteframe>
+                    </div>
+                    <div flex layout-padding>
+                        <md-whiteframe class="md-whiteframe-z1" layout layout-align="center center">
+                            <h1>Year: <small>75Mb</small></h1>
+                        </md-whiteframe>
+                    </div>
+                </div>
+
+                <md-content>
+                    <md-list>
+                        <md-item ng-repeat="hour in byHour | orderBy:'-$id'">
+                            <md-item-content>
+                                <div class="md-tile-content">
+                                    <h3>{{hour.$id}}</h3>
+                                    <p>
+                                        <strong>In:</strong>{{hour.inOctets/1024/1024 | number:0}}<br>
+                                        <strong>Out:</strong>{{hour.outOctets/1024/1024 | number:0}}<br>
+                                    </p>
+                                </div>
+                            </md-item-content>
+                            <md-divider ng-if="!$last"></md-divider>
+                        </md-item>
+                    </md-list>
+                </md-content>
+
+            </div>
+
+
+        </div>
+
+        <script src="/bower_components/angular/angular.js"></script>
+        <script src="/bower_components/angular-aria/angular-aria.js"></script>
+        <script src="/bower_components/angular-animate/angular-animate.js"></script>
+        <script src="/bower_components/hammerjs/hammer.js"></script>
+        <script src="/bower_components/angular-material/angular-material.js"></script>
+        <script src="/bower_components/firebase/firebase.js"></script>
+        <script src="/bower_components/firebase-simple-login/firebase-simple-login.js"></script>
+        <script src="/bower_components/angularfire/dist/angularfire.min.js"></script>
+        <script src="/bower_components/moment/min/moment.min.js"></script>
+        <script src="app.js"></script>
+
+    </body>
+</html>
