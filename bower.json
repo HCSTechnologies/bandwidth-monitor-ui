@@ -20,6 +20,7 @@
     "angularfire": "~0.8.2",
     "angular-material": "~0.5.1",
     "firebase-simple-login": "~1.6.4",
-    "moment": "~2.8.3"
+    "moment": "~2.8.3",
+    "lodash": "~2.4.1"
   }
 }

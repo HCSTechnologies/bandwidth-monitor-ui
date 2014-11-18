@@ -27,11 +27,44 @@ angular.module('app',['ngMaterial','firebase'])
 
             $scope.auth = true;
 
-            $scope.byHour    = $firebase(fb.child('aggregates/router:hodey:com/hour')).$asArray();
-            $scope.today     = $firebase(fb.child('aggregates/router:hodey:com/day/'+moment.utc().startOf('day').valueOf())).$asObject();
-            $scope.thisWeek  = $firebase(fb.child('aggregates/router:hodey:com/week/'+moment.utc().startOf('week').valueOf())).$asObject();
-            $scope.thisMonth = $firebase(fb.child('aggregates/router:hodey:com/month/'+moment.utc().startOf('month').valueOf())).$asObject();
-            $scope.thisYear  = $firebase(fb.child('aggregates/router:hodey:com/year/'+moment.utc().startOf('year').valueOf())).$asObject();
+            $scope.byHour = $firebase(fb.child('aggregates/router:hodey:com/hour')).$asArray();
+            
+            $scope.lastTenRaw = $firebase(fb.child('snmpData').orderByChild('host').startAt('router.hodey.com').endAt('router.hodey.com').limitToLast(60)).$asArray();
+            
+            $scope.lastTen = [];
+
+            $scope.lastTenRaw.$watch(function(data) {
+
+                var lastTenMinutes = _.reduce($scope.lastTenRaw,function(memo,item) {
+                    
+                    var time = moment(item.time).startOf('minute').valueOf();
+                    
+                    if(!memo[time]) {
+                        memo[time] = {
+                            time: time,
+                            inOctet: 0,
+                            outOctet: 0
+                        }
+                    }
+                    
+                    memo[time].inOctet += item.inOctetsDelta;
+                    memo[time].outOctet += item.outOctetsDelta;
+                    
+                    return memo;
+                    
+                },{});
+                
+                angular.copy(_.toArray(lastTenMinutes),$scope.lastTen);
+
+            });
+
+
+            $scope.periods = [
+                ["Today",$firebase(fb.child('aggregates/router:hodey:com/day/'+moment.utc().startOf('day').valueOf())).$asObject()],
+                ["Week",$firebase(fb.child('aggregates/router:hodey:com/week/'+moment.utc().startOf('week').valueOf())).$asObject()],
+                ["Month",$firebase(fb.child('aggregates/router:hodey:com/month/'+moment.utc().startOf('month').valueOf())).$asObject()],
+                ["Year",$firebase(fb.child('aggregates/router:hodey:com/year/'+moment.utc().startOf('year').valueOf())).$asObject()]
+            ];
 
         } else {
             $scope.auth = false;

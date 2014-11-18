@@ -1,0 +1,29 @@
+application: hodeyconsultingservices
+module: bandwidth
+version: 1
+runtime: php
+api_version: 1
+threadsafe: yes
+default_expiration: 6d 12h
+
+handlers:
+
+#Scripts
+
+- url: (/|index.html)
+  static_files: index.html
+  upload: index.html
+  secure: always
+  http_headers:
+    Vary: Accept-Encoding
+
+- url: (/app.js)
+  static_files: app.js
+  upload: app.js
+  secure: always
+  http_headers:
+    Vary: Accept-Encoding  
+
+- url: /bower_components
+  static_dir: bower_components
+  secure: always
