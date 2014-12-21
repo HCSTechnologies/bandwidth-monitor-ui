@@ -58,8 +58,8 @@
                                 <h3>{{period[0]}}:</h3>
                             </div>
                             <div style="text-align: right;">
-                                In: {{period[1].inOctets/1024/1024 | number:2}}Mb<br>
-                                Out: {{period[1].outOctets/1024/1024 | number:2}}Mb
+                                In: {{period[1].inOctets/1024/1024 | number:2}}Mb ({{period[2].inOctets/1024/1024 | number:2}}Mb)<br>
+                                Out: {{period[1].outOctets/1024/1024 | number:2}}Mb ({{period[2].outOctets/1024/1024 | number:2}}Mb)
                             </div>
                         </md-whiteframe>
                     </div>

@@ -1,14 +1,6 @@
 angular.module('app',['ngMaterial','firebase'])
 
-.run(function($log) {
-    
-    $log.debug('Running!')
-    
-    
-})
-
 .controller('test',function($scope,$firebase,$firebaseSimpleLogin,$log) {
-
 
     var fb = new Firebase('https://bandwidth-monitor.firebaseio.com');
 
@@ -60,10 +52,26 @@ angular.module('app',['ngMaterial','firebase'])
 
 
             $scope.periods = [
-                ["Today",$firebase(fb.child('aggregates/router:hodey:com/day/'+moment.utc().startOf('day').valueOf())).$asObject()],
-                ["Week",$firebase(fb.child('aggregates/router:hodey:com/week/'+moment.utc().startOf('week').valueOf())).$asObject()],
-                ["Month",$firebase(fb.child('aggregates/router:hodey:com/month/'+moment.utc().startOf('month').valueOf())).$asObject()],
+                [
+                    "Today",
+                    $firebase(fb.child('aggregates/router:hodey:com/day/'+moment.utc().startOf('day').valueOf())).$asObject(),
+                    $firebase(fb.child('aggregates/router:hodey:com/day/'+moment.utc().subtract(1,'day').startOf('day').valueOf())).$asObject(),
+                ],
+
+                [
+                    "Week",
+                    $firebase(fb.child('aggregates/router:hodey:com/week/'+moment.utc().startOf('week').valueOf())).$asObject(),
+                    $firebase(fb.child('aggregates/router:hodey:com/week/'+moment.utc().subtract(1,'week').startOf('week').valueOf())).$asObject()
+                ],
+
+                [
+                    "Month",
+                    $firebase(fb.child('aggregates/router:hodey:com/month/'+moment.utc().startOf('month').valueOf())).$asObject(),
+                    $firebase(fb.child('aggregates/router:hodey:com/month/'+moment.utc().subtract(1,'month').startOf('month').valueOf())).$asObject()
+                ],
+
                 ["Year",$firebase(fb.child('aggregates/router:hodey:com/year/'+moment.utc().startOf('year').valueOf())).$asObject()]
+
             ];
 
         } else {
